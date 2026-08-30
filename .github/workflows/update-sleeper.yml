@@ -1,0 +1,338 @@
+name: Update Sleeper Data
+
+on:
+  workflow_dispatch:
+
+  schedule:
+    - cron: "17 * * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  update-sleeper:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download Sleeper data
+        env:
+          LEAGUE_ID: "1389360001671249920"
+
+        run: |
+          python <<'PY'
+          import json
+          import os
+          import urllib.request
+          from datetime import datetime, timezone
+
+          LEAGUE_ID = os.environ["LEAGUE_ID"]
+          BASE = "https://api.sleeper.app/v1"
+
+          def get_json(url):
+              print(f"Downloading: {url}")
+
+              request = urllib.request.Request(
+                  url,
+                  headers={
+                      "User-Agent": "Sleeper-ChatGPT-Data-Feed/1.0",
+                      "Accept": "application/json"
+                  }
+              )
+
+              with urllib.request.urlopen(request, timeout=60) as response:
+                  return json.load(response)
+
+          #
+          # NFL / league information
+          #
+
+          nfl_state = get_json(f"{BASE}/state/nfl")
+
+          current_week = nfl_state.get("week", 1)
+
+          league = get_json(
+              f"{BASE}/league/{LEAGUE_ID}"
+          )
+
+          users = get_json(
+              f"{BASE}/league/{LEAGUE_ID}/users"
+          )
+
+          rosters = get_json(
+              f"{BASE}/league/{LEAGUE_ID}/rosters"
+          )
+
+          drafts = get_json(
+              f"{BASE}/league/{LEAGUE_ID}/drafts"
+          )
+
+          #
+          # Current week matchup
+          #
+
+          matchups = get_json(
+              f"{BASE}/league/{LEAGUE_ID}/matchups/{current_week}"
+          )
+
+          #
+          # All league transactions through current week
+          #
+
+          transactions = []
+
+          for week in range(1, current_week + 1):
+              try:
+                  week_transactions = get_json(
+                      f"{BASE}/league/{LEAGUE_ID}/transactions/{week}"
+                  )
+
+                  for tx in week_transactions:
+                      tx["_week"] = week
+
+                  transactions.extend(week_transactions)
+
+              except Exception as e:
+                  print(
+                      f"Could not retrieve transactions for week {week}: {e}"
+                  )
+
+          #
+          # Trending waiver information from Sleeper
+          #
+
+          try:
+              trending_adds = get_json(
+                  f"{BASE}/players/nfl/trending/add"
+                  "?lookback_hours=24&limit=100"
+              )
+          except Exception:
+              trending_adds = []
+
+          try:
+              trending_drops = get_json(
+                  f"{BASE}/players/nfl/trending/drop"
+                  "?lookback_hours=24&limit=100"
+              )
+          except Exception:
+              trending_drops = []
+
+          #
+          # Sleeper player database
+          #
+
+          all_players = get_json(
+              f"{BASE}/players/nfl"
+          )
+
+          #
+          # Determine everyone currently owned
+          #
+
+          rostered_ids = set()
+
+          for roster in rosters:
+              for player_id in roster.get("players") or []:
+                  rostered_ids.add(str(player_id))
+
+          #
+          # Keep useful fields only.
+          # This dramatically reduces the JSON size.
+          #
+
+          useful_positions = {
+              "QB",
+              "RB",
+              "WR",
+              "TE",
+              "K"
+          }
+
+          player_lookup = {}
+          available_players = []
+
+          for player_id, player in all_players.items():
+
+              position = player.get("position")
+
+              if position not in useful_positions:
+                  continue
+
+              info = {
+                  "player_id": player_id,
+                  "full_name": player.get("full_name"),
+                  "first_name": player.get("first_name"),
+                  "last_name": player.get("last_name"),
+                  "position": position,
+                  "team": player.get("team"),
+                  "status": player.get("status"),
+                  "active": player.get("active"),
+                  "injury_status": player.get("injury_status"),
+                  "injury_body_part": player.get("injury_body_part"),
+                  "years_exp": player.get("years_exp"),
+                  "age": player.get("age"),
+                  "number": player.get("number"),
+                  "depth_chart_position": player.get(
+                      "depth_chart_position"
+                  ),
+                  "depth_chart_order": player.get(
+                      "depth_chart_order"
+                  )
+              }
+
+              player_lookup[player_id] = info
+
+              if player_id not in rostered_ids:
+                  available_players.append(info)
+
+          #
+          # Translate roster IDs into readable player names
+          #
+
+          readable_rosters = []
+
+          for roster in rosters:
+
+              readable_players = []
+
+              for player_id in roster.get("players") or []:
+
+                  player_id = str(player_id)
+
+                  if player_id in player_lookup:
+                      readable_players.append(
+                          player_lookup[player_id]
+                      )
+
+                  else:
+                      # Sleeper represents defenses as team codes
+                      readable_players.append({
+                          "player_id": player_id,
+                          "full_name": player_id,
+                          "position": "DEF"
+                      })
+
+              starter_ids = {
+                  str(x)
+                  for x in roster.get("starters") or []
+              }
+
+              for player in readable_players:
+                  player["starter"] = (
+                      player["player_id"] in starter_ids
+                  )
+
+              readable_rosters.append({
+                  "roster_id": roster.get("roster_id"),
+                  "owner_id": roster.get("owner_id"),
+                  "players": readable_players,
+                  "waiver_position":
+                      roster.get("settings", {}).get(
+                          "waiver_position"
+                      ),
+                  "wins":
+                      roster.get("settings", {}).get("wins"),
+                  "losses":
+                      roster.get("settings", {}).get("losses"),
+                  "ties":
+                      roster.get("settings", {}).get("ties")
+              })
+
+          #
+          # Translate user / owner information
+          #
+
+          owners = {}
+
+          for user in users:
+              owners[str(user.get("user_id"))] = {
+                  "user_id": user.get("user_id"),
+                  "username": user.get("display_name"),
+                  "team_name":
+                      (user.get("metadata") or {}).get(
+                          "team_name"
+                      )
+              }
+
+          #
+          # Main ChatGPT data package
+          #
+
+          output = {
+
+              "generated_at":
+                  datetime.now(timezone.utc).isoformat(),
+
+              "league_id": LEAGUE_ID,
+
+              "current_week": current_week,
+
+              "nfl_state": nfl_state,
+
+              "league": league,
+
+              "owners": owners,
+
+              "rosters": readable_rosters,
+
+              "raw_rosters": rosters,
+
+              "matchups": matchups,
+
+              "transactions": transactions,
+
+              "drafts": drafts,
+
+              "trending_adds_24h": trending_adds,
+
+              "trending_drops_24h": trending_drops,
+
+              "available_players": available_players
+          }
+
+          #
+          # Save
+          #
+
+          with open(
+              "sleeper-chatgpt.json",
+              "w",
+              encoding="utf-8"
+          ) as file:
+
+              json.dump(
+                  output,
+                  file,
+                  indent=2,
+                  ensure_ascii=False
+              )
+
+          print()
+          print("Sleeper data successfully generated.")
+          print(f"Current week: {current_week}")
+          print(f"Rosters: {len(rosters)}")
+          print(
+              f"Available players: {len(available_players)}"
+          )
+          print(
+              f"Transactions: {len(transactions)}"
+          )
+
+          PY
+
+      - name: Commit updated Sleeper data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add sleeper-chatgpt.json
+
+          if git diff --cached --quiet; then
+            echo "Sleeper data has not changed."
+            exit 0
+          fi
+
+          git commit -m "Update Sleeper data"
+          git push
