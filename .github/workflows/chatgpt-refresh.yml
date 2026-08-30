@@ -1,0 +1,22 @@
+name: ChatGPT Sleeper Refresh
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "refresh.trigger"
+
+permissions:
+  actions: write
+  contents: read
+
+jobs:
+  trigger-sleeper-update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Sleeper update workflow
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh workflow run update-sleeper.yml --repo "${{ github.repository }}" --ref main
