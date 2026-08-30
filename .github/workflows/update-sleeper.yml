@@ -17,9 +17,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Download Sleeper data
+      - name: Download and split Sleeper data
         env:
           LEAGUE_ID: "1389360001671249920"
+          MY_OWNER_ID: "464317027109040128"
 
         run: |
           python <<'PY'
@@ -29,11 +30,12 @@ jobs:
           from datetime import datetime, timezone
 
           LEAGUE_ID = os.environ["LEAGUE_ID"]
+          MY_OWNER_ID = os.environ["MY_OWNER_ID"]
           BASE = "https://api.sleeper.app/v1"
+          GENERATED_AT = datetime.now(timezone.utc).isoformat()
 
           def get_json(url):
               print(f"Downloading: {url}")
-
               request = urllib.request.Request(
                   url,
                   headers={
@@ -41,74 +43,46 @@ jobs:
                       "Accept": "application/json"
                   }
               )
-
               with urllib.request.urlopen(request, timeout=60) as response:
                   return json.load(response)
 
-          #
-          # NFL / league information
-          #
+          def save_json(path, data):
+              with open(path, "w", encoding="utf-8") as file:
+                  json.dump(data, file, indent=2, ensure_ascii=False)
+              print(f"Saved {path}")
 
           nfl_state = get_json(f"{BASE}/state/nfl")
-
           current_week = nfl_state.get("week", 1)
 
-          league = get_json(
-              f"{BASE}/league/{LEAGUE_ID}"
-          )
-
-          users = get_json(
-              f"{BASE}/league/{LEAGUE_ID}/users"
-          )
-
-          rosters = get_json(
-              f"{BASE}/league/{LEAGUE_ID}/rosters"
-          )
-
-          drafts = get_json(
-              f"{BASE}/league/{LEAGUE_ID}/drafts"
-          )
-
-          #
-          # Current week matchup
-          #
-
+          league = get_json(f"{BASE}/league/{LEAGUE_ID}")
+          users = get_json(f"{BASE}/league/{LEAGUE_ID}/users")
+          rosters = get_json(f"{BASE}/league/{LEAGUE_ID}/rosters")
+          drafts = get_json(f"{BASE}/league/{LEAGUE_ID}/drafts")
           matchups = get_json(
               f"{BASE}/league/{LEAGUE_ID}/matchups/{current_week}"
           )
 
-          #
-          # All league transactions through current week
-          #
-
           transactions = []
-
           for week in range(1, current_week + 1):
               try:
                   week_transactions = get_json(
                       f"{BASE}/league/{LEAGUE_ID}/transactions/{week}"
                   )
-
                   for tx in week_transactions:
                       tx["_week"] = week
-
                   transactions.extend(week_transactions)
-
-              except Exception as e:
+              except Exception as exc:
                   print(
-                      f"Could not retrieve transactions for week {week}: {e}"
+                      f"Could not retrieve transactions for week {week}: {exc}"
                   )
-
-          #
-          # Trending waiver information from Sleeper
-          #
 
           try:
               trending_adds = get_json(
                   f"{BASE}/players/nfl/trending/add"
                   "?lookback_hours=24&limit=100"
               )
-          except Exception:
+          except Exception as exc:
+              print(f"Could not retrieve trending adds: {exc}")
               trending_adds = []
 
           try:
@@ -116,47 +90,23 @@ jobs:
                   f"{BASE}/players/nfl/trending/drop"
                   "?lookback_hours=24&limit=100"
               )
-          except Exception:
+          except Exception as exc:
+              print(f"Could not retrieve trending drops: {exc}")
               trending_drops = []
 
-          #
-          # Sleeper player database
-          #
-
-          all_players = get_json(
-              f"{BASE}/players/nfl"
-          )
-
-          #
-          # Determine everyone currently owned
-          #
+          all_players = get_json(f"{BASE}/players/nfl")
 
           rostered_ids = set()
-
           for roster in rosters:
               for player_id in roster.get("players") or []:
                   rostered_ids.add(str(player_id))
 
-          #
-          # Keep useful fields only.
-          # This dramatically reduces the JSON size.
-          #
-
-          useful_positions = {
-              "QB",
-              "RB",
-              "WR",
-              "TE",
-              "K"
-          }
-
+          useful_positions = {"QB", "RB", "WR", "TE", "K"}
           player_lookup = {}
           available_players = []
 
           for player_id, player in all_players.items():
-
               position = player.get("position")
-
               if position not in useful_positions:
                   continue
 
@@ -184,142 +134,241 @@ jobs:
 
               player_lookup[player_id] = info
 
-              if player_id not in rostered_ids:
+              if (
+                  player_id not in rostered_ids
+                  and player.get("active") is True
+                  and player.get("team")
+              ):
                   available_players.append(info)
 
-          #
-          # Translate roster IDs into readable player names
-          #
+          available_players.sort(
+              key=lambda p: (
+                  p.get("position") or "",
+                  p.get("depth_chart_order")
+                  if isinstance(p.get("depth_chart_order"), int)
+                  else 99,
+                  p.get("team") or "",
+                  p.get("full_name") or ""
+              )
+          )
 
           readable_rosters = []
 
           for roster in rosters:
-
               readable_players = []
 
               for player_id in roster.get("players") or []:
-
                   player_id = str(player_id)
 
                   if player_id in player_lookup:
-                      readable_players.append(
-                          player_lookup[player_id]
-                      )
-
+                      player_info = dict(player_lookup[player_id])
                   else:
-                      # Sleeper represents defenses as team codes
-                      readable_players.append({
+                      player_info = {
                           "player_id": player_id,
                           "full_name": player_id,
-                          "position": "DEF"
-                      })
+                          "position": "DEF",
+                          "team": player_id
+                      }
 
-              starter_ids = {
-                  str(x)
-                  for x in roster.get("starters") or []
-              }
-
-              for player in readable_players:
-                  player["starter"] = (
-                      player["player_id"] in starter_ids
+                  player_info["starter"] = (
+                      player_id
+                      in {str(x) for x in roster.get("starters") or []}
                   )
+                  player_info["reserve"] = (
+                      player_id
+                      in {str(x) for x in roster.get("reserve") or []}
+                  )
+
+                  readable_players.append(player_info)
 
               readable_rosters.append({
                   "roster_id": roster.get("roster_id"),
                   "owner_id": roster.get("owner_id"),
                   "players": readable_players,
                   "waiver_position":
-                      roster.get("settings", {}).get(
-                          "waiver_position"
-                      ),
-                  "wins":
-                      roster.get("settings", {}).get("wins"),
-                  "losses":
-                      roster.get("settings", {}).get("losses"),
-                  "ties":
-                      roster.get("settings", {}).get("ties")
+                      roster.get("settings", {}).get("waiver_position"),
+                  "waiver_budget_used":
+                      roster.get("settings", {}).get("waiver_budget_used"),
+                  "wins": roster.get("settings", {}).get("wins"),
+                  "losses": roster.get("settings", {}).get("losses"),
+                  "ties": roster.get("settings", {}).get("ties")
               })
 
-          #
-          # Translate user / owner information
-          #
-
           owners = {}
-
           for user in users:
               owners[str(user.get("user_id"))] = {
                   "user_id": user.get("user_id"),
                   "username": user.get("display_name"),
                   "team_name":
-                      (user.get("metadata") or {}).get(
-                          "team_name"
-                      )
+                      (user.get("metadata") or {}).get("team_name")
               }
 
-          #
-          # Main ChatGPT data package
-          #
+          roster_owner_lookup = {}
+          for roster in readable_rosters:
+              owner_id = str(roster.get("owner_id"))
+              roster_owner_lookup[roster["roster_id"]] = {
+                  "roster_id": roster["roster_id"],
+                  "owner": owners.get(owner_id),
+                  "waiver_position": roster.get("waiver_position")
+              }
 
-          output = {
+          def enrich_trending(items):
+              enriched = []
+              for item in items:
+                  player_id = str(item.get("player_id"))
+                  player = dict(
+                      player_lookup.get(
+                          player_id,
+                          {
+                              "player_id": player_id,
+                              "full_name": player_id
+                          }
+                      )
+                  )
+                  player["trend_count"] = item.get("count")
+                  enriched.append(player)
+              return enriched
 
-              "generated_at":
-                  datetime.now(timezone.utc).isoformat(),
+          my_roster = next(
+              (
+                  roster
+                  for roster in readable_rosters
+                  if str(roster.get("owner_id")) == MY_OWNER_ID
+              ),
+              None
+          )
 
+          my_owner = owners.get(MY_OWNER_ID)
+          my_matchup = None
+          my_opponent = None
+
+          if my_roster:
+              my_roster_id = my_roster.get("roster_id")
+              my_matchup = next(
+                  (
+                      matchup
+                      for matchup in matchups
+                      if matchup.get("roster_id") == my_roster_id
+                  ),
+                  None
+              )
+
+              if my_matchup and my_matchup.get("matchup_id") is not None:
+                  opponent_matchup = next(
+                      (
+                          matchup
+                          for matchup in matchups
+                          if (
+                              matchup.get("matchup_id")
+                              == my_matchup.get("matchup_id")
+                              and matchup.get("roster_id") != my_roster_id
+                          )
+                      ),
+                      None
+                  )
+
+                  if opponent_matchup:
+                      opponent_roster_id = opponent_matchup.get("roster_id")
+                      opponent_roster = next(
+                          (
+                              roster
+                              for roster in readable_rosters
+                              if roster.get("roster_id")
+                              == opponent_roster_id
+                          ),
+                          None
+                      )
+                      my_opponent = {
+                          "matchup": opponent_matchup,
+                          "roster": opponent_roster,
+                          "owner":
+                              roster_owner_lookup.get(
+                                  opponent_roster_id, {}
+                              ).get("owner")
+                      }
+
+          common = {
+              "generated_at": GENERATED_AT,
               "league_id": LEAGUE_ID,
+              "current_week": current_week
+          }
 
-              "current_week": current_week,
-
+          combined_output = {
+              **common,
               "nfl_state": nfl_state,
-
               "league": league,
-
               "owners": owners,
-
               "rosters": readable_rosters,
-
               "raw_rosters": rosters,
-
               "matchups": matchups,
-
               "transactions": transactions,
-
               "drafts": drafts,
-
               "trending_adds_24h": trending_adds,
-
               "trending_drops_24h": trending_drops,
-
               "available_players": available_players
           }
 
-          #
-          # Save
-          #
+          my_team_output = {
+              **common,
+              "league_name": league.get("name"),
+              "scoring_settings": league.get("scoring_settings"),
+              "roster_positions": league.get("roster_positions"),
+              "owner": my_owner,
+              "roster": my_roster,
+              "matchup": my_matchup,
+              "opponent": my_opponent
+          }
 
-          with open(
-              "sleeper-chatgpt.json",
-              "w",
-              encoding="utf-8"
-          ) as file:
+          rosters_output = {
+              **common,
+              "league_name": league.get("name"),
+              "owners": owners,
+              "rosters": readable_rosters
+          }
 
-              json.dump(
-                  output,
-                  file,
-                  indent=2,
-                  ensure_ascii=False
-              )
+          waivers_output = {
+              **common,
+              "league_name": league.get("name"),
+              "my_waiver_position":
+                  my_roster.get("waiver_position")
+                  if my_roster else None,
+              "my_waiver_budget_used":
+                  my_roster.get("waiver_budget_used")
+                  if my_roster else None,
+              "league_waiver_budget":
+                  league.get("settings", {}).get("waiver_budget"),
+              "trending_adds_24h": enrich_trending(trending_adds),
+              "trending_drops_24h": enrich_trending(trending_drops),
+              "available_players": available_players
+          }
+
+          matchups_output = {
+              **common,
+              "league_name": league.get("name"),
+              "roster_owners": roster_owner_lookup,
+              "matchups": matchups
+          }
+
+          transactions_output = {
+              **common,
+              "league_name": league.get("name"),
+              "transactions": transactions
+          }
+
+          save_json("sleeper-chatgpt.json", combined_output)
+          save_json("my-team.json", my_team_output)
+          save_json("rosters.json", rosters_output)
+          save_json("waivers.json", waivers_output)
+          save_json("matchups.json", matchups_output)
+          save_json("transactions.json", transactions_output)
 
           print()
           print("Sleeper data successfully generated.")
           print(f"Current week: {current_week}")
           print(f"Rosters: {len(rosters)}")
-          print(
-              f"Available players: {len(available_players)}"
-          )
-          print(
-              f"Transactions: {len(transactions)}"
-          )
-
+          print(f"Available active players: {len(available_players)}")
+          print(f"Transactions: {len(transactions)}")
+          print(f"My owner: {my_owner}")
           PY
 
       - name: Commit updated Sleeper data
@@ -327,7 +376,13 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add sleeper-chatgpt.json
+          git add \
+            sleeper-chatgpt.json \
+            my-team.json \
+            rosters.json \
+            waivers.json \
+            matchups.json \
+            transactions.json
 
           if git diff --cached --quiet; then
             echo "Sleeper data has not changed."
