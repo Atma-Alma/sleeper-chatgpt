@@ -1,34 +1,26 @@
 # Chris vs Tete Fantasy Battle
 
-This folder tracks a season-long cross-league competition between **Chris / Valaritas** (`cmartin303`, The Sunday Heist in **Do Work**) and **Tete** (`Timboslice796` in **Drone Daddys**).
+Cross-league fantasy battle between **Chris / Valaritas** and **Tete**.
 
-## Why the battle is normalized
+## Battle standings
 
-The two Sleeper leagues do not use identical lineup/scoring rules. Chris's league starts QB, 2 RB, 2 WR, TE, FLEX, K and DEF, while Tete's league starts QB, 2 RB, 2 WR, TE and 2 FLEX. There are also small scoring-setting differences.
+| Competitor | Battle points | Weekly wins | Weekly losses | Weekly ties |
+|---|---:|---:|---:|---:|
+| Chris / Valaritas | 0.0 | 0 | 0 | 0 |
+| Tete | 0.0 | 0 | 0 | 0 |
 
-Because of that, **raw weekly fantasy points are shown but do not decide the cross-league winner by themselves**.
+## Weekly head-to-head
 
-## Weekly battle rule
+The primary metric is **weekly score percentile within each competitor's own league**. This makes different lineup and scoring settings much less important than simply asking: *how badly did you beat (or get beaten by) your own league that week?*
 
-For every scored NFL fantasy week:
+| Week | Chris score | Chris league percentile | Tete score | Tete league percentile | Battle winner |
+|---:|---:|---:|---:|---:|---|
+| 1 | 0.00 | — | 0.00 | — | Pending |
 
-1. Take Chris's score and rank it against every team in the Do Work league that week.
-2. Take Tete's score and rank it against every team in the Drone Daddys league that week.
-3. Convert each result to a league-relative percentile.
-4. The higher percentile wins the Chris-vs-Tete battle for that week and earns **1 battle point**.
-5. If the percentiles tie, use league-relative z-score as the first tiebreaker.
-6. If still tied, a win in the competitor's own Sleeper matchup beats a tie, which beats a loss.
-7. If still tied, the battle week is a draw and each competitor earns **0.5 battle points**.
+### Tiebreakers
 
-This answers the fairest cross-league question: **who performed better relative to the competition they actually faced?**
+1. League-relative z-score.
+2. Actual matchup result in each competitor's league (win > tie > loss).
+3. If still equal, the battle week is a tie and each gets 0.5 battle points.
 
-## Files
-
-- `config.json` — competitors, Sleeper identifiers and battle rules.
-- `update_battle.py` — pulls both Sleeper leagues and builds the normalized weekly scoreboard.
-- `scoreboard.json` — machine-readable season battle standings and weekly detail.
-- `.github/workflows/update-competition.yml` — refreshes the battle scoreboard automatically every hour and can also be run manually.
-
-## Current status
-
-The 2026 season is at Week 1 and the battle is awaiting its first scored week. The automated updater will populate weekly results as Sleeper records fantasy points.
+Generated automatically from Sleeper data at `2026-09-09T02:51:36.668572+00:00`.
