@@ -1,0 +1,31 @@
+name: Update Chris vs Tete Battle
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "41 * * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  update-battle:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build cross-league scoreboard
+        run: python Competition/update_battle.py
+
+      - name: Commit updated scoreboard
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add Competition/scoreboard.json Competition/README.md
+          if git diff --cached --quiet; then
+            echo "No scoreboard changes"
+            exit 0
+          fi
+          git commit -m "Update Chris vs Tete battle scoreboard"
+          git push
