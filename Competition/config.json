@@ -1,0 +1,40 @@
+{
+  "competition_name": "Chris vs Tete Fantasy Battle",
+  "season": "2026",
+  "competitors": [
+    {
+      "key": "chris",
+      "display_name": "Chris / Valaritas",
+      "sleeper_username": "cmartin303",
+      "team_name": "The Sunday Heist",
+      "league_name": "Do Work",
+      "league_id": "1389360001671249920",
+      "owner_id": "608844109523800064",
+      "data_path": "/"
+    },
+    {
+      "key": "tete",
+      "display_name": "Tete",
+      "sleeper_username": "Timboslice796",
+      "team_name": "Timboslice796",
+      "league_name": "Drone Daddys",
+      "league_id": "1370052597343326208",
+      "owner_id": "1385460837581357056",
+      "data_path": "/Tete"
+    }
+  ],
+  "rules": {
+    "weekly_primary_metric": "league_score_percentile",
+    "description": "Each competitor's weekly fantasy score is ranked against every team in that competitor's own Sleeper league. The higher league-relative percentile wins the cross-league week.",
+    "weekly_tiebreakers": [
+      "league_score_z_score",
+      "matchup_result",
+      "tie"
+    ],
+    "battle_points": {
+      "weekly_win": 1.0,
+      "weekly_tie": 0.5,
+      "weekly_loss": 0.0
+    }
+  }
+}
