@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-09T23:48:40.850655+00:00",
+  "generated_at": "2026-09-10T00:53:37.597158+00:00",
   "competition_name": "Chris vs Tete Fantasy Battle",
   "season": "2026",
   "nfl_week": 1,
@@ -51,12 +51,12 @@
     "chris": {
       "battle_points": 0.0,
       "battle_wins": 0,
-      "battle_losses": 0,
+      "battle_losses": 1,
       "battle_ties": 0
     },
     "tete": {
-      "battle_points": 0.0,
-      "battle_wins": 0,
+      "battle_points": 1.0,
+      "battle_wins": 1,
       "battle_losses": 0,
       "battle_ties": 0
     }
@@ -64,30 +64,30 @@
   "weeks": [
     {
       "week": 1,
-      "battle_winner": null,
-      "decided_by": "pending",
+      "battle_winner": "tete",
+      "decided_by": "league_score_percentile",
       "competitors": {
         "chris": {
           "week": 1,
-          "status": "pending",
+          "status": "scored",
           "score": 0.0,
           "league_size": 12,
-          "league_score_percentile": null,
-          "league_score_z_score": null,
-          "league_week_rank": null,
-          "matchup_result": null,
-          "opponent_score": null
+          "league_score_percentile": 29.167,
+          "league_score_z_score": -0.5636,
+          "league_week_rank": 6,
+          "matchup_result": "T",
+          "opponent_score": 0.0
         },
         "tete": {
           "week": 1,
-          "status": "pending",
+          "status": "scored",
           "score": 0.0,
           "league_size": 10,
-          "league_score_percentile": null,
-          "league_score_z_score": null,
-          "league_week_rank": null,
-          "matchup_result": null,
-          "opponent_score": null
+          "league_score_percentile": 30.0,
+          "league_score_z_score": -0.6031,
+          "league_week_rank": 5,
+          "matchup_result": "L",
+          "opponent_score": 2.04
         }
       }
     }
