@@ -6,8 +6,8 @@ Cross-league fantasy battle between **Chris / Valaritas** and **Tete**.
 
 | Competitor | Battle points | Weekly wins | Weekly losses | Weekly ties |
 |---|---:|---:|---:|---:|
-| Chris / Valaritas | 3.0 | 3 | 0 | 0 |
-| Tete | 0.0 | 0 | 3 | 0 |
+| Chris / Valaritas | 2.0 | 2 | 1 | 0 |
+| Tete | 1.0 | 1 | 2 | 0 |
 
 ## Weekly head-to-head
 
@@ -17,7 +17,7 @@ The primary metric is **weekly score percentile within each competitor's own lea
 |---:|---:|---:|---:|---:|---|
 | 1 | 126.16 | 70.8% | 113.44 | 35.0% | Chris / Valaritas |
 | 2 | 142.70 | 95.8% | 110.88 | 55.0% | Chris / Valaritas |
-| 3 | 96.34 | 29.2% | 85.58 | 25.0% | Chris / Valaritas |
+| 3 | 96.34 | 29.2% | 88.48 | 35.0% | Tete |
 
 ### Tiebreakers
 
@@ -25,4 +25,4 @@ The primary metric is **weekly score percentile within each competitor's own lea
 2. Actual matchup result in each competitor's league (win > tie > loss).
 3. If still equal, the battle week is a tie and each gets 0.5 battle points.
 
-Generated automatically from Sleeper data at `2026-09-28T01:51:40.612465+00:00`.
+Generated automatically from Sleeper data at `2026-09-28T02:53:18.609595+00:00`.
