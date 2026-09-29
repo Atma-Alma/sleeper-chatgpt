@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-09-29T03:53:43.410299+00:00",
+  "generated_at": "2026-09-29T04:53:40.761637+00:00",
   "competition_name": "Chris vs Tete Fantasy Battle",
   "season": "2026",
-  "nfl_week": 3,
+  "nfl_week": 4,
   "rules": {
     "weekly_primary_metric": "league_score_percentile",
     "description": "Each competitor's weekly fantasy score is ranked against every team in that competitor's own Sleeper league. The higher league-relative percentile wins the cross-league week.",
@@ -29,7 +29,7 @@
       "data_path": "/",
       "roster_id": 9,
       "season_wins": 2,
-      "season_losses": 0,
+      "season_losses": 1,
       "season_ties": 0
     },
     "tete": {
@@ -43,7 +43,7 @@
       "data_path": "/Tete",
       "roster_id": 8,
       "season_wins": 2,
-      "season_losses": 0,
+      "season_losses": 1,
       "season_ties": 0
     }
   },
@@ -146,6 +146,35 @@
           "league_week_rank": 7,
           "matchup_result": "L",
           "opponent_score": 121.2
+        }
+      }
+    },
+    {
+      "week": 4,
+      "battle_winner": null,
+      "decided_by": "pending",
+      "competitors": {
+        "chris": {
+          "week": 4,
+          "status": "pending",
+          "score": 0.0,
+          "league_size": 12,
+          "league_score_percentile": null,
+          "league_score_z_score": null,
+          "league_week_rank": null,
+          "matchup_result": null,
+          "opponent_score": null
+        },
+        "tete": {
+          "week": 4,
+          "status": "pending",
+          "score": 0.0,
+          "league_size": 10,
+          "league_score_percentile": null,
+          "league_score_z_score": null,
+          "league_week_rank": null,
+          "matchup_result": null,
+          "opponent_score": null
         }
       }
     }
