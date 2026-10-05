@@ -18,7 +18,7 @@ The primary metric is **weekly score percentile within each competitor's own lea
 | 1 | 126.16 | 70.8% | 113.44 | 35.0% | Chris / Valaritas |
 | 2 | 142.70 | 95.8% | 110.88 | 55.0% | Chris / Valaritas |
 | 3 | 99.44 | 20.8% | 94.68 | 35.0% | Tete |
-| 4 | 142.08 | 87.5% | 111.56 | 75.0% | Chris / Valaritas |
+| 4 | 171.08 | 95.8% | 122.76 | 75.0% | Chris / Valaritas |
 
 ### Tiebreakers
 
@@ -26,4 +26,4 @@ The primary metric is **weekly score percentile within each competitor's own lea
 2. Actual matchup result in each competitor's league (win > tie > loss).
 3. If still equal, the battle week is a tie and each gets 0.5 battle points.
 
-Generated automatically from Sleeper data at `2026-10-05T01:16:38.409527+00:00`.
+Generated automatically from Sleeper data at `2026-10-05T07:41:05.473713+00:00`.
