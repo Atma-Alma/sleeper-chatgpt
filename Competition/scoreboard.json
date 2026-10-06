@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-10-06T03:19:37.992033+00:00",
+  "generated_at": "2026-10-06T10:46:37.923310+00:00",
   "competition_name": "Chris vs Tete Fantasy Battle",
   "season": "2026",
-  "nfl_week": 4,
+  "nfl_week": 5,
   "rules": {
     "weekly_primary_metric": "league_score_percentile",
     "description": "Each competitor's weekly fantasy score is ranked against every team in that competitor's own Sleeper league. The higher league-relative percentile wins the cross-league week.",
@@ -28,7 +28,7 @@
       "owner_id": "608844109523800064",
       "data_path": "/",
       "roster_id": 9,
-      "season_wins": 2,
+      "season_wins": 3,
       "season_losses": 1,
       "season_ties": 0
     },
@@ -43,7 +43,7 @@
       "data_path": "/Tete",
       "roster_id": 8,
       "season_wins": 2,
-      "season_losses": 1,
+      "season_losses": 2,
       "season_ties": 0
     }
   },
@@ -160,10 +160,10 @@
           "score": 171.08,
           "league_size": 12,
           "league_score_percentile": 95.833,
-          "league_score_z_score": 2.0509,
+          "league_score_z_score": 1.9922,
           "league_week_rank": 1,
           "matchup_result": "W",
-          "opponent_score": 129.6
+          "opponent_score": 135.24
         },
         "tete": {
           "week": 4,
@@ -171,10 +171,39 @@
           "score": 122.76,
           "league_size": 10,
           "league_score_percentile": 65.0,
-          "league_score_z_score": 0.3712,
+          "league_score_z_score": 0.2722,
           "league_week_rank": 4,
           "matchup_result": "L",
           "opponent_score": 158.72
+        }
+      }
+    },
+    {
+      "week": 5,
+      "battle_winner": null,
+      "decided_by": "pending",
+      "competitors": {
+        "chris": {
+          "week": 5,
+          "status": "pending",
+          "score": 0.0,
+          "league_size": 12,
+          "league_score_percentile": null,
+          "league_score_z_score": null,
+          "league_week_rank": null,
+          "matchup_result": null,
+          "opponent_score": null
+        },
+        "tete": {
+          "week": 5,
+          "status": "pending",
+          "score": 0.0,
+          "league_size": 10,
+          "league_score_percentile": null,
+          "league_score_z_score": null,
+          "league_week_rank": null,
+          "matchup_result": null,
+          "opponent_score": null
         }
       }
     }
