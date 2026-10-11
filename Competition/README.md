@@ -27,4 +27,4 @@ The primary metric is **weekly score percentile within each competitor's own lea
 2. Actual matchup result in each competitor's league (win > tie > loss).
 3. If still equal, the battle week is a tie and each gets 0.5 battle points.
 
-Generated automatically from Sleeper data at `2026-10-10T22:56:00.929992+00:00`.
+Generated automatically from Sleeper data at `2026-10-11T02:11:03.877995+00:00`.
