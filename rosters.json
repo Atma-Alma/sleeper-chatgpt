@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-11T07:50:24.464235+00:00",
+  "generated_at": "2026-11-11T16:16:33.096321+00:00",
   "league_id": "1389360001671249920",
   "current_week": 10,
   "league_name": "Do Work",
@@ -86,7 +86,7 @@
           "number": 8,
           "depth_chart_position": "QB",
           "depth_chart_order": 2,
-          "starter": false,
+          "starter": true,
           "reserve": false
         },
         {
@@ -124,7 +124,7 @@
           "number": 8,
           "depth_chart_position": "RB",
           "depth_chart_order": 2,
-          "starter": false,
+          "starter": true,
           "reserve": false
         },
         {
@@ -143,7 +143,7 @@
           "number": 20,
           "depth_chart_position": "RB",
           "depth_chart_order": 1,
-          "starter": true,
+          "starter": false,
           "reserve": false
         },
         {
@@ -238,7 +238,7 @@
           "number": 15,
           "depth_chart_position": "QB",
           "depth_chart_order": 1,
-          "starter": true,
+          "starter": false,
           "reserve": false
         },
         {
@@ -250,14 +250,14 @@
           "team": "SF",
           "status": "Active",
           "active": true,
-          "injury_status": "Out",
+          "injury_status": "Questionable",
           "injury_body_part": "Hamstring",
           "years_exp": 7,
           "age": 30,
           "number": 19,
           "depth_chart_position": "SWR",
           "depth_chart_order": 9,
-          "starter": false,
+          "starter": true,
           "reserve": false
         },
         {
@@ -326,14 +326,14 @@
           "team": "LAR",
           "status": "Inactive",
           "active": true,
-          "injury_status": "Questionable",
-          "injury_body_part": "Knee",
+          "injury_status": "Doubtful",
+          "injury_body_part": "Knee - MCL",
           "years_exp": 3,
           "age": 25,
           "number": 12,
           "depth_chart_position": "RWR",
           "depth_chart_order": 6,
-          "starter": true,
+          "starter": false,
           "reserve": false
         },
         {
@@ -345,7 +345,7 @@
           "reserve": false
         }
       ],
-      "waiver_position": 5,
+      "waiver_position": 4,
       "waiver_budget_used": 0,
       "wins": 4,
       "losses": 5,
@@ -535,7 +535,7 @@
           "team": "HOU",
           "status": "Active",
           "active": true,
-          "injury_status": "Out",
+          "injury_status": "Questionable",
           "injury_body_part": "Groin",
           "years_exp": 7,
           "age": 29,
@@ -630,7 +630,7 @@
           "reserve": false
         }
       ],
-      "waiver_position": 10,
+      "waiver_position": 8,
       "waiver_budget_used": 0,
       "wins": 6,
       "losses": 3,
@@ -706,7 +706,7 @@
           "team": "NE",
           "status": "Active",
           "active": true,
-          "injury_status": "Out",
+          "injury_status": "Questionable",
           "injury_body_part": "Illness",
           "years_exp": 1,
           "age": 24,
@@ -820,7 +820,7 @@
           "team": "DAL",
           "status": "Active",
           "active": true,
-          "injury_status": "Out",
+          "injury_status": "Questionable",
           "injury_body_part": "Hamstring",
           "years_exp": 4,
           "age": 25,
@@ -839,7 +839,7 @@
           "team": "NYJ",
           "status": "Active",
           "active": true,
-          "injury_status": "Out",
+          "injury_status": "Questionable",
           "injury_body_part": "Concussion",
           "years_exp": 4,
           "age": 26,
@@ -915,7 +915,7 @@
           "reserve": false
         }
       ],
-      "waiver_position": 9,
+      "waiver_position": 7,
       "waiver_budget_used": 0,
       "wins": 6,
       "losses": 3,
@@ -934,8 +934,8 @@
           "team": "NYG",
           "status": "Active",
           "active": true,
-          "injury_status": "Out",
-          "injury_body_part": "Hamstring",
+          "injury_status": null,
+          "injury_body_part": null,
           "years_exp": 1,
           "age": 24,
           "number": 44,
@@ -1192,6 +1192,25 @@
       "owner_id": "464645930331664384",
       "players": [
         {
+          "player_id": "11539",
+          "full_name": "Jake Bates",
+          "first_name": "Jake",
+          "last_name": "Bates",
+          "position": "K",
+          "team": "DET",
+          "status": "Active",
+          "active": true,
+          "injury_status": null,
+          "injury_body_part": null,
+          "years_exp": 3,
+          "age": 27,
+          "number": 39,
+          "depth_chart_position": "K",
+          "depth_chart_order": 1,
+          "starter": false,
+          "reserve": false
+        },
+        {
           "player_id": "11604",
           "full_name": "Brock Bowers",
           "first_name": "Brock",
@@ -1301,25 +1320,6 @@
           "age": 29,
           "number": 20,
           "depth_chart_position": "RB",
-          "depth_chart_order": 1,
-          "starter": true,
-          "reserve": false
-        },
-        {
-          "player_id": "6650",
-          "full_name": "Chase McLaughlin",
-          "first_name": "Chase",
-          "last_name": "McLaughlin",
-          "position": "K",
-          "team": "TB",
-          "status": "Active",
-          "active": true,
-          "injury_status": null,
-          "injury_body_part": null,
-          "years_exp": 7,
-          "age": 30,
-          "number": 4,
-          "depth_chart_position": "K",
           "depth_chart_order": 1,
           "starter": true,
           "reserve": false
@@ -1439,6 +1439,14 @@
           "reserve": false
         },
         {
+          "player_id": "SF",
+          "full_name": "SF",
+          "position": "DEF",
+          "team": "SF",
+          "starter": false,
+          "reserve": false
+        },
+        {
           "player_id": "TB",
           "full_name": "TB",
           "position": "DEF",
@@ -1447,7 +1455,7 @@
           "reserve": false
         }
       ],
-      "waiver_position": 11,
+      "waiver_position": 12,
       "waiver_budget_used": 0,
       "wins": 6,
       "losses": 3,
@@ -1472,7 +1480,7 @@
           "age": 26,
           "number": 14,
           "depth_chart_position": "PR",
-          "depth_chart_order": 7,
+          "depth_chart_order": 8,
           "starter": false,
           "reserve": false
         },
@@ -1492,7 +1500,7 @@
           "number": 18,
           "depth_chart_position": "QB",
           "depth_chart_order": 1,
-          "starter": true,
+          "starter": false,
           "reserve": false
         },
         {
@@ -1548,7 +1556,7 @@
           "age": 21,
           "number": 4,
           "depth_chart_position": "RB",
-          "depth_chart_order": 8,
+          "depth_chart_order": 7,
           "starter": false,
           "reserve": true
         },
@@ -1568,25 +1576,6 @@
           "number": 88,
           "depth_chart_position": "TE",
           "depth_chart_order": 1,
-          "starter": false,
-          "reserve": false
-        },
-        {
-          "player_id": "5849",
-          "full_name": "Kyler Murray",
-          "first_name": "Kyler",
-          "last_name": "Murray",
-          "position": "QB",
-          "team": "MIN",
-          "status": "Active",
-          "active": true,
-          "injury_status": "Out",
-          "injury_body_part": "Hamstring",
-          "years_exp": 7,
-          "age": 29,
-          "number": 1,
-          "depth_chart_position": "QB",
-          "depth_chart_order": 3,
           "starter": false,
           "reserve": false
         },
@@ -1662,7 +1651,7 @@
           "age": 26,
           "number": 14,
           "depth_chart_position": "LWR",
-          "depth_chart_order": 7,
+          "depth_chart_order": 9,
           "starter": false,
           "reserve": true
         },
@@ -1705,6 +1694,25 @@
           "reserve": false
         },
         {
+          "player_id": "96",
+          "full_name": "Aaron Rodgers",
+          "first_name": "Aaron",
+          "last_name": "Rodgers",
+          "position": "QB",
+          "team": "PIT",
+          "status": "Active",
+          "active": true,
+          "injury_status": null,
+          "injury_body_part": null,
+          "years_exp": 21,
+          "age": 42,
+          "number": 8,
+          "depth_chart_position": "QB",
+          "depth_chart_order": 1,
+          "starter": true,
+          "reserve": false
+        },
+        {
           "player_id": "9997",
           "full_name": "Zay Flowers",
           "first_name": "Zay",
@@ -1740,7 +1748,7 @@
           "reserve": false
         }
       ],
-      "waiver_position": 12,
+      "waiver_position": 9,
       "waiver_budget_used": 0,
       "wins": 7,
       "losses": 2,
@@ -1797,8 +1805,8 @@
           "team": "CLE",
           "status": "Active",
           "active": true,
-          "injury_status": "Questionable",
-          "injury_body_part": "Leg",
+          "injury_status": null,
+          "injury_body_part": null,
           "years_exp": 0,
           "age": 22,
           "number": 1,
@@ -2093,6 +2101,25 @@
           "reserve": false
         },
         {
+          "player_id": "13269",
+          "full_name": "Fernando Mendoza",
+          "first_name": "Fernando",
+          "last_name": "Mendoza",
+          "position": "QB",
+          "team": "LV",
+          "status": "Active",
+          "active": true,
+          "injury_status": null,
+          "injury_body_part": null,
+          "years_exp": 0,
+          "age": 23,
+          "number": 15,
+          "depth_chart_position": "QB",
+          "depth_chart_order": 1,
+          "starter": false,
+          "reserve": false
+        },
+        {
           "player_id": "13274",
           "full_name": "Germie Bernard",
           "first_name": "Germie",
@@ -2120,7 +2147,7 @@
           "team": "SF",
           "status": "Active",
           "active": true,
-          "injury_status": "Out",
+          "injury_status": "Questionable",
           "injury_body_part": "Achilles",
           "years_exp": 12,
           "age": 33,
@@ -2146,7 +2173,7 @@
           "number": 8,
           "depth_chart_position": "RB",
           "depth_chart_order": 3,
-          "starter": true,
+          "starter": false,
           "reserve": false
         },
         {
@@ -2158,32 +2185,13 @@
           "team": "NE",
           "status": "Active",
           "active": true,
-          "injury_status": "Out",
+          "injury_status": "Questionable",
           "injury_body_part": "Knee",
           "years_exp": 7,
           "age": 29,
           "number": 1,
           "depth_chart_position": "LWR",
           "depth_chart_order": 5,
-          "starter": false,
-          "reserve": false
-        },
-        {
-          "player_id": "6011",
-          "full_name": "Gardner Minshew II",
-          "first_name": "Gardner",
-          "last_name": "Minshew II",
-          "position": "QB",
-          "team": "ARI",
-          "status": "Inactive",
-          "active": true,
-          "injury_status": "IR",
-          "injury_body_part": "Elbow",
-          "years_exp": 7,
-          "age": 30,
-          "number": 15,
-          "depth_chart_position": "QB",
-          "depth_chart_order": 2,
           "starter": false,
           "reserve": false
         },
@@ -2222,7 +2230,7 @@
           "number": 83,
           "depth_chart_position": "TE",
           "depth_chart_order": 1,
-          "starter": false,
+          "starter": true,
           "reserve": false
         },
         {
@@ -2283,15 +2291,15 @@
           "reserve": false
         },
         {
-          "player_id": "NO",
-          "full_name": "NO",
+          "player_id": "DET",
+          "full_name": "DET",
           "position": "DEF",
-          "team": "NO",
+          "team": "DET",
           "starter": true,
           "reserve": false
         }
       ],
-      "waiver_position": 3,
+      "waiver_position": 10,
       "waiver_budget_used": 0,
       "wins": 3,
       "losses": 6,
@@ -2321,6 +2329,25 @@
           "reserve": false
         },
         {
+          "player_id": "11579",
+          "full_name": "Audric Estime",
+          "first_name": "Audric",
+          "last_name": "Estime",
+          "position": "RB",
+          "team": "NO",
+          "status": "Active",
+          "active": true,
+          "injury_status": null,
+          "injury_body_part": null,
+          "years_exp": 2,
+          "age": 23,
+          "number": 36,
+          "depth_chart_position": "RB",
+          "depth_chart_order": 2,
+          "starter": false,
+          "reserve": false
+        },
+        {
           "player_id": "11625",
           "full_name": "Adonai Mitchell",
           "first_name": "Adonai",
@@ -2336,25 +2363,6 @@
           "number": 15,
           "depth_chart_position": "RWR",
           "depth_chart_order": 1,
-          "starter": false,
-          "reserve": false
-        },
-        {
-          "player_id": "11637",
-          "full_name": "Keon Coleman",
-          "first_name": "Keon",
-          "last_name": "Coleman",
-          "position": "WR",
-          "team": "BUF",
-          "status": "Active",
-          "active": true,
-          "injury_status": null,
-          "injury_body_part": null,
-          "years_exp": 2,
-          "age": 23,
-          "number": 0,
-          "depth_chart_position": "LWR",
-          "depth_chart_order": 3,
           "starter": false,
           "reserve": false
         },
@@ -2568,6 +2576,25 @@
           "reserve": false
         },
         {
+          "player_id": "9502",
+          "full_name": "Tank Dell",
+          "first_name": "Tank",
+          "last_name": "Dell",
+          "position": "WR",
+          "team": "HOU",
+          "status": "Active",
+          "active": true,
+          "injury_status": null,
+          "injury_body_part": null,
+          "years_exp": 3,
+          "age": 27,
+          "number": 1,
+          "depth_chart_position": "SWR",
+          "depth_chart_order": 5,
+          "starter": false,
+          "reserve": false
+        },
+        {
           "player_id": "JAX",
           "full_name": "JAX",
           "position": "DEF",
@@ -2576,7 +2603,7 @@
           "reserve": false
         }
       ],
-      "waiver_position": 8,
+      "waiver_position": 11,
       "waiver_budget_used": 0,
       "wins": 5,
       "losses": 4,
@@ -2671,7 +2698,7 @@
           "team": "KC",
           "status": "Active",
           "active": true,
-          "injury_status": "Out",
+          "injury_status": "Questionable",
           "injury_body_part": "Hamstring",
           "years_exp": 2,
           "age": 23,
@@ -2747,7 +2774,7 @@
           "team": "TEN",
           "status": "Active",
           "active": true,
-          "injury_status": "Out",
+          "injury_status": "Questionable",
           "injury_body_part": "Shoulder",
           "years_exp": 0,
           "age": 21,
@@ -2842,7 +2869,7 @@
           "team": "NE",
           "status": "Active",
           "active": true,
-          "injury_status": "Out",
+          "injury_status": "Doubtful",
           "injury_body_part": "Knee",
           "years_exp": 5,
           "age": 28,
@@ -2880,7 +2907,7 @@
           "reserve": false
         }
       ],
-      "waiver_position": 7,
+      "waiver_position": 6,
       "waiver_budget_used": 0,
       "wins": 5,
       "losses": 4,
@@ -2962,7 +2989,7 @@
           "age": 24,
           "number": 28,
           "depth_chart_position": "RB",
-          "depth_chart_order": 3,
+          "depth_chart_order": 4,
           "starter": false,
           "reserve": true
         },
@@ -3171,7 +3198,7 @@
           "age": 25,
           "number": 2,
           "depth_chart_position": "LWR",
-          "depth_chart_order": 2,
+          "depth_chart_order": 9,
           "starter": true,
           "reserve": false
         },
@@ -3184,7 +3211,7 @@
           "reserve": false
         }
       ],
-      "waiver_position": 6,
+      "waiver_position": 5,
       "waiver_budget_used": 0,
       "wins": 4,
       "losses": 5,
@@ -3431,13 +3458,13 @@
           "team": "ARI",
           "status": "Active",
           "active": true,
-          "injury_status": "Out",
+          "injury_status": "Questionable",
           "injury_body_part": "Concussion",
           "years_exp": 4,
           "age": 25,
           "number": 20,
           "depth_chart_position": "RB",
-          "depth_chart_order": 6,
+          "depth_chart_order": 5,
           "starter": false,
           "reserve": false
         },
@@ -3488,7 +3515,7 @@
           "reserve": false
         }
       ],
-      "waiver_position": 4,
+      "waiver_position": 3,
       "waiver_budget_used": 0,
       "wins": 4,
       "losses": 5,
